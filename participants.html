@@ -2,30 +2,24 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Список участников</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
-    h2 { font-size: 16px; margin-bottom: 20px; text-align: center; }
-    .btn-container { margin-bottom: 20px; text-align: center; }
-    .btn { font-size: 16px; padding: 10px 20px; margin: 5px;
-           cursor: pointer; border: none; background-color: #D96B1C;
-           color: #fff; border-radius: 5px; }
-    .btn:hover { background-color: #C36019; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    th { background-color: #f4f4f4; cursor: pointer; }
-    @media (max-width: 480px) {
-      body { font-size: 12px; padding: 10px; }
-      th, td { padding: 4px; font-size: 10px; }
-    }
-    /* Командная категория */
-    .team-name { font-weight: bold; background-color: #f0f0f0;
-                 padding: 6px; border-radius: 4px; margin-bottom: 4px; }
-    .player { margin-left: 8px; margin-bottom: 2px; }
-    .player-id { color: #555; font-size: 0.9em; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Список участников</title>
+<style>
+  body{font-family:Arial,sans-serif;padding:20px;margin:0;}
+  h2{font-size:16px;text-align:center;margin-bottom:20px;}
+  .btn-container{text-align:center;margin-bottom:20px;}
+  .btn{font-size:16px;padding:10px 20px;margin:0 5px;border:none;border-radius:5px;
+       background:#D96B1C;color:#fff;cursor:pointer;}
+  .btn:hover{background:#C36019;}
+  table{width:100%;border-collapse:collapse;margin-top:20px;}
+  th,td{border:1px solid #ccc;padding:10px;text-align:left;}
+  th{background:#f4f4f4;cursor:pointer;}
+  @media(max-width:480px){body{font-size:12px;padding:10px;}th,td{padding:4px;font-size:10px;}}
+  .team-name{font-weight:bold;background:#f0f0f0;padding:6px;border-radius:4px;margin-bottom:4px;}
+  .player{margin-left:8px;margin-bottom:2px;}
+  .player-id{color:#555;font-size:0.9em;}
+</style>
 </head>
 <body>
   <h2>Выберите Категорию</h2>
@@ -48,41 +42,24 @@
       tbody.innerHTML = '';
       const filtered = participants.filter(p => p.group === currentGroup);
 
-      if (currentGroup === 'A') {
+      if (currentGroup === 'A' || currentGroup === 'B') {
+        // Заголовок для A и B
         thead.innerHTML =
           '<th>#</th>' +
           '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
-          '<th onclick="sortBy(\'fshrId\')">ID РШТ</th>' +
+          '<th onclick="sortBy(\'fshrId\')">' +
+            (currentGroup==='A'?'ID РШТ':'ID ФШР') +
+          '</th>' +
           '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
           '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
-        filtered.sort((a,b) => (parseFloat(b.rating)||0) - (parseFloat(a.rating)||0))
-                .forEach((p,i) => {
+        filtered.forEach((p,i) => {
           const row = document.createElement('tr');
           row.innerHTML =
-            '<td>' + (i+1) + '</td>' +
-            '<td>' + p.fullName + '</td>' +
-            '<td>' + p.fshrId + '</td>' +
-            '<td>' + p.birthDate + '</td>' +
-            '<td>' + p.rating + '</td>';
-          tbody.appendChild(row);
-        });
-      }
-      else if (currentGroup === 'B') {
-        thead.innerHTML =
-          '<th>#</th>' +
-          '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
-          '<th onclick="sortBy(\'fshrId\')">ID ФШР</th>' +
-          '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
-          '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
-        filtered.sort((a,b) => (parseFloat(b.rating)||0) - (parseFloat(a.rating)||0))
-                .forEach((p,i) => {
-          const row = document.createElement('tr');
-          row.innerHTML =
-            '<td>' + (i+1) + '</td>' +
-            '<td>' + p.fullName + '</td>' +
-            '<td>' + p.fshrId + '</td>' +
-            '<td>' + p.birthDate + '</td>' +
-            '<td>' + p.rating + '</td>';
+            '<td>'+(i+1)+'</td>' +
+            '<td>'+p.fullName+'</td>' +
+            '<td>'+p.fshrId+'</td>' +
+            '<td>'+p.birthDate+'</td>' +
+            '<td>'+p.rating+'</td>';
           tbody.appendChild(row);
         });
       }
@@ -91,13 +68,13 @@
         filtered.forEach((p,i) => {
           const row = document.createElement('tr');
           row.innerHTML =
-            '<td>' + (i+1) + '</td>' +
+            '<td>'+(i+1)+'</td>' +
             '<td>' +
-              '<div class="team-name">' + p.teamName + '</div>' +
-              '<div class="player">' + p.player1 +
-                ' <span class="player-id">(' + p.player1Id + ')</span></div>' +
-              '<div class="player">' + p.player2 +
-                ' <span class="player-id">(' + p.player2Id + ')</span></div>' +
+              '<div class="team-name">'+p.teamName+'</div>' +
+              '<div class="player">'+p.player1+
+                ' <span class="player-id">('+p.player1Id+')</span></div>' +
+              '<div class="player">'+p.player2+
+                ' <span class="player-id">('+p.player2Id+')</span></div>' +
             '</td>';
           tbody.appendChild(row);
         });
@@ -113,7 +90,9 @@
       if (field === 'fullName') {
         participants.sort((a,b) => a.fullName.localeCompare(b.fullName));
       } else {
-        participants.sort((a,b) => (parseFloat(b[field])||0) - (parseFloat(a[field])||0));
+        participants.sort((a,b) =>
+          (parseFloat(b[field])||0) - (parseFloat(a[field])||0)
+        );
       }
       renderTable();
     }
