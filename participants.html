@@ -1,113 +1,120 @@
-?<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>?????? ??????????</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список участников</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
-    h2 { font-size: 16px; text-align: center; margin-bottom: 20px; }
-    .btn-container { text-align: center; margin-bottom: 20px; }
-    .btn { padding: 10px 20px; margin: 5px; font-size: 16px; border: none; border-radius: 5px;
-           background: #D96B1C; color: #fff; cursor: pointer; }
-    .btn:hover { background: #C36019; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-    th { background: #f4f4f4; cursor: pointer; }
-    .team-header td { background: #eef; font-weight: bold; padding: 8px; }
+    h2 { font-size: 16px; margin-bottom: 20px; text-align: center; }
+    .btn-container { margin-bottom: 20px; text-align: center; }
+    .btn { font-size: 16px; padding: 10px 20px; margin: 5px;
+           cursor: pointer; border: none; background-color: #D96B1C;
+           color: #fff; border-radius: 5px; }
+    .btn:hover { background-color: #C36019; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background-color: #f4f4f4; cursor: pointer; }
     @media (max-width: 480px) {
       body { font-size: 12px; padding: 10px; }
       th, td { padding: 4px; font-size: 10px; }
     }
+    /* Командная категория */
+    .team-name { font-weight: bold; background-color: #f0f0f0;
+                 padding: 6px; border-radius: 4px; margin-bottom: 4px; }
+    .player { margin-left: 8px; margin-bottom: 2px; }
+    .player-id { color: #555; font-size: 0.9em; }
   </style>
 </head>
 <body>
-  <h2>???????? ?????????</h2>
+  <h2>Выберите Категорию</h2>
   <div class="btn-container">
-    <button class="btn" onclick="filterGroup('A')">??????????</button>
-    <button class="btn" onclick="filterGroup('B')">?? ??????</button>
-    <button class="btn" onclick="filterGroup('?????????')">?????????</button>
+    <button class="btn" onclick="filterGroup('A')">Начинающие</button>
+    <button class="btn" onclick="filterGroup('B')">На разряд</button>
+    <button class="btn" onclick="filterGroup('Командный')">Командный</button>
   </div>
   <table id="participants">
     <thead><tr id="tableHeader"></tr></thead>
     <tbody></tbody>
   </table>
   <script>
-    const participants = [{"group":"B","fullName":"??????? ????? ??????????","fshrId":"468075","rating":"1128","birthDate":"2013"},{"group":"B","fullName":"??????? ???? ????????","fshrId":"","rating":"","birthDate":"2015"},{"group":"B","fullName":"??????? ??????? ??????????","fshrId":"621581","rating":"1173","birthDate":"2015"},{"group":"B","fullName":"???????  ?????  ????????? ","fshrId":"700681","rating":"1023","birthDate":"2015"},{"group":"B","fullName":"???????? ???????  ????? ","fshrId":"633285","rating":"1224","birthDate":"2017"},{"group":"B","fullName":"??????????? ?????? ??????????","fshrId":"534913","rating":"1234","birthDate":"2017"},{"group":"B","fullName":"????????? ?????? ??????????","fshrId":"687256","rating":"1231","birthDate":"2013"},{"group":"B","fullName":"??????? ???? ?????????????","fshrId":"648368","rating":"1316","birthDate":"2018"},{"group":"A","fullName":"????????  ????? ?????????","fshrId":"","rating":"","birthDate":"2018"},{"group":"?????????","teamName":"??????? ","players":[{"name":"??????? ?????????  ????????","id":"648423"},{"name":"??????? ???? ?????????? ","id":""}]},{"group":"B","fullName":"????????? ?????? ?????????????","fshrId":"382890","rating":"1320","birthDate":"2011"},{"group":"B","fullName":"??????? ???????? ??????????","fshrId":"","rating":"","birthDate":"2014"},{"group":"A","fullName":"????????? ???????  ?????????? ","fshrId":"156283","rating":"766","birthDate":"2017"},{"group":"A","fullName":"??????? ?????? ????????","fshrId":"155516","rating":"826","birthDate":"2016"},{"group":"B","fullName":"???????? ???? ??????????","fshrId":"644168","rating":"1171","birthDate":"2016"},{"group":"B","fullName":"????????? ??????? ??????????","fshrId":"667552","rating":"1000","birthDate":"2015"},{"group":"B","fullName":"???????? ?????  ??????? ","fshrId":"527002","rating":"1042","birthDate":"2014"},{"group":"?????????","teamName":"Geometric ","players":[{"name":"????? ??????  ?????????? ","id":"669158"},{"name":"???????? ??????? ??????? ????","id":""}]},{"group":"B","fullName":"??????? ?????? ??????????","fshrId":"421388","rating":"1109","birthDate":"2015"}];
-    let current = 'A';
-    let sortColumn = 'rating';
-    let sortAsc = false;
-
-    function sortBy(col) {
-      if (sortColumn === col) {
-        sortAsc = !sortAsc;
-      } else {
-        sortColumn = col;
-        sortAsc = false;
-      }
-      renderTable();
-    }
+    const participants = [{"group":"B","fullName":"Аверьянов Сергей Александрович","fshrId":"382890","rating":"1320","birthDate":"2011"},{"group":"B","fullName":"Смирнов Глеб Станиславович","fshrId":"648368","rating":"1316","birthDate":"2018"},{"group":"B","fullName":"Насретдинов Рустам Эльмирович","fshrId":"534913","rating":"1234","birthDate":"2017"},{"group":"B","fullName":"Конопский Андрей Валерьевич","fshrId":"687256","rating":"1231","birthDate":"2013"},{"group":"B","fullName":"Павколас Доминик  Ильич ","fshrId":"633285","rating":"1224","birthDate":"2017"},{"group":"B","fullName":"Ананьев Николай Евгеньевич","fshrId":"621581","rating":"1173","birthDate":"2015"},{"group":"B","fullName":"Величкин Пётр Васильевич","fshrId":"644168","rating":"1171","birthDate":"2016"},{"group":"B","fullName":"Леготин Игорь Георгиевич","fshrId":"468075","rating":"1128","birthDate":"2013"},{"group":"B","fullName":"Филинов Кирилл Русланович","fshrId":"421388","rating":"1109","birthDate":"2015"},{"group":"B","fullName":"Солдатов Игнат  Юрьевич ","fshrId":"527002","rating":"1042","birthDate":"2014"},{"group":"B","fullName":"Гусаров  Макар  Андреевич ","fshrId":"700681","rating":"1023","birthDate":"2015"},{"group":"B","fullName":"Белоусова Евдокия Дмитриевна","fshrId":"667552","rating":"1000","birthDate":"2015"},{"group":"A","fullName":"Кабанов Степан Игоревич","fshrId":"155516","rating":"826","birthDate":"2016"},{"group":"A","fullName":"Григорьев Николай  Алексеевич ","fshrId":"156283","rating":"766","birthDate":"2017"},{"group":"B","fullName":"Фесенко Иван Олегович","fshrId":"","rating":"","birthDate":"2015"},{"group":"A","fullName":"Чундоков  Дамир Тимурович","fshrId":"","rating":"","birthDate":"2018"},{"group":"Командный","teamName":"Медведи ","player1":"Фомичев Александр  Олегович","player1Id":"648423","player2":"Фомичев Олег Николаевич ","player2Id":""},{"group":"B","fullName":"Золотов Владимир Дмитриевич","fshrId":"","rating":"","birthDate":"2014"},{"group":"Командный","teamName":"Geometric ","player1":"Попов Демьян  Максимович ","player1Id":"669158","player2":"Шыхалиев Алекбер Афлатун оглы","player2Id":""},{"group":"Неизвестно","fullName":"Хорбенко Роман Геннадьевич","fshrId":"","rating":"","birthDate":"2015"}];
+    let currentGroup = 'A';
 
     function renderTable() {
       const thead = document.getElementById('tableHeader');
       const tbody = document.querySelector('#participants tbody');
       tbody.innerHTML = '';
-      const filtered = participants.filter(p => p.group === current);
+      const filtered = participants.filter(p => p.group === currentGroup);
 
-      if (current === 'A' || current === 'B') {
-        // ????????? ? ???????????? ???????????
+      if (currentGroup === 'A') {
         thead.innerHTML =
           '<th>#</th>' +
-          '<th onclick="sortBy('fullName')">???</th>' +
-          '<th onclick="sortBy('fshrId')">ID ???</th>' +
-          '<th onclick="sortBy('birthDate')">??? ????????</th>' +
-          '<th onclick="sortBy('rating')">???????</th>';
-        // ??????????
-        filtered.sort((a, b) => {
-          let va = a[sortColumn] || '';
-          let vb = b[sortColumn] || '';
-          let na = parseFloat(va), nb = parseFloat(vb);
-          if (!isNaN(na) && !isNaN(nb)) {
-            return sortAsc ? na - nb : nb - na;
-          }
-          return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+          '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
+          '<th onclick="sortBy(\'fshrId\')">ID РШТ</th>' +
+          '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
+          '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
+        filtered.sort((a,b) => (parseFloat(b.rating)||0) - (parseFloat(a.rating)||0))
+                .forEach((p,i) => {
+          const row = document.createElement('tr');
+          row.innerHTML =
+            '<td>' + (i+1) + '</td>' +
+            '<td>' + p.fullName + '</td>' +
+            '<td>' + p.fshrId + '</td>' +
+            '<td>' + p.birthDate + '</td>' +
+            '<td>' + p.rating + '</td>';
+          tbody.appendChild(row);
         });
-        // ????? ?????
-        filtered.forEach((p, i) => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${i+1}</td>
-            <td>${p.fullName}</td>
-            <td>${p.fshrId}</td>
-            <td>${p.birthDate}</td>
-            <td>${p.rating}</td>`;
-          tbody.appendChild(tr);
+      }
+      else if (currentGroup === 'B') {
+        thead.innerHTML =
+          '<th>#</th>' +
+          '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
+          '<th onclick="sortBy(\'fshrId\')">ID ФШР</th>' +
+          '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
+          '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
+        filtered.sort((a,b) => (parseFloat(b.rating)||0) - (parseFloat(a.rating)||0))
+                .forEach((p,i) => {
+          const row = document.createElement('tr');
+          row.innerHTML =
+            '<td>' + (i+1) + '</td>' +
+            '<td>' + p.fullName + '</td>' +
+            '<td>' + p.fshrId + '</td>' +
+            '<td>' + p.birthDate + '</td>' +
+            '<td>' + p.rating + '</td>';
+          tbody.appendChild(row);
         });
-
-      } else {
-        // ?????????
-        thead.innerHTML = '<th>???????? ???????</th><th>????? / ID ???</th>';
-        filtered.forEach(team => {
-          // ???????? ???????
-          const thRow = document.createElement('tr');
-          thRow.className = 'team-header';
-          thRow.innerHTML = `<td colspan="2">${team.teamName}</td>`;
-          tbody.appendChild(thRow);
-          // ??? ??????, ?????? ?? ????? ??????
-          team.players.forEach(p => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${p.name}</td><td>${p.id}</td>`;
-            tbody.appendChild(tr);
-          });
+      }
+      else if (currentGroup === 'Командный') {
+        thead.innerHTML = '<th>#</th><th>Команда и игроки</th>';
+        filtered.forEach((p,i) => {
+          const row = document.createElement('tr');
+          row.innerHTML =
+            '<td>' + (i+1) + '</td>' +
+            '<td>' +
+              '<div class="team-name">' + p.teamName + '</div>' +
+              '<div class="player">' + p.player1 +
+                ' <span class="player-id">(' + p.player1Id + ')</span></div>' +
+              '<div class="player">' + p.player2 +
+                ' <span class="player-id">(' + p.player2Id + ')</span></div>' +
+            '</td>';
+          tbody.appendChild(row);
         });
       }
     }
 
     function filterGroup(g) {
-      current = g;
-      // ????? ?????????? ??? ????? ??????
-      sortColumn = 'rating';
-      sortAsc = false;
+      currentGroup = g;
+      renderTable();
+    }
+
+    function sortBy(field) {
+      if (field === 'fullName') {
+        participants.sort((a,b) => a.fullName.localeCompare(b.fullName));
+      } else {
+        participants.sort((a,b) => (parseFloat(b[field])||0) - (parseFloat(a[field])||0));
+      }
       renderTable();
     }
 
