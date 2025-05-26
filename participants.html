@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Список участников</title>
 <style>
   body{font-family:Arial,sans-serif;padding:20px;margin:0;}
@@ -16,6 +15,9 @@
   th,td{border:1px solid #ccc;padding:10px;text-align:left;}
   th{background:#f4f4f4;cursor:pointer;}
   @media(max-width:480px){body{font-size:12px;padding:10px;}th,td{padding:4px;font-size:10px;}}
+  .team-name{font-weight:bold;background:#f0f0f0;padding:6px;border-radius:4px;margin-bottom:4px;}
+  .player{margin-left:8px;margin-bottom:2px;}
+  .player-id{color:#555;font-size:0.9em;}
 </style>
 </head>
 <body>
@@ -23,76 +25,81 @@
   <div class="btn-container">
     <button class="btn" onclick="filterGroup('A')">Начинающие</button>
     <button class="btn" onclick="filterGroup('B')">На разряд</button>
+    <button class="btn" onclick="filterGroup('Командный')">Командный</button>
   </div>
   <table id="participants">
     <thead><tr id="tableHeader"></tr></thead>
     <tbody></tbody>
   </table>
 <script>
-  const participants = [{"fullName":"Аверьянов Сергей Александрович","fshrId":"382890","rating":"1320","birthDate":"2011","group":"B"},{"fullName":"Смирнов Глеб Станиславович","fshrId":"648368","rating":"1316","birthDate":"2018","group":"B"},{"fullName":"Насретдинов Рустам Эльмирович","fshrId":"534913","rating":"1234","birthDate":"2017","group":"B"},{"fullName":"Конопский Андрей Валерьевич","fshrId":"687256","rating":"1231","birthDate":"2013","group":"B"},{"fullName":"Павколас Доминик  Ильич ","fshrId":"633285","rating":"1224","birthDate":"2017","group":"B"},{"fullName":"Ананьев Николай Евгеньевич","fshrId":"621581","rating":"1173","birthDate":"2015","group":"B"},{"fullName":"Величкин Пётр Васильевич","fshrId":"644168","rating":"1171","birthDate":"2016","group":"B"},{"fullName":"Леготин Игорь Георгиевич","fshrId":"468075","rating":"1128","birthDate":"2013","group":"B"},{"fullName":"Филинов Кирилл Русланович","fshrId":"421388","rating":"1109","birthDate":"2015","group":"B"},{"fullName":"Солдатов Игнат  Юрьевич ","fshrId":"527002","rating":"1042","birthDate":"2014","group":"B"},{"fullName":"Гусаров  Макар  Андреевич ","fshrId":"700681","rating":"1023","birthDate":"2015","group":"B"},{"fullName":"Белоусова Евдокия Дмитриевна","fshrId":"667552","rating":"1000","birthDate":"2015","group":"B"},{"fullName":"Кабанов Степан Игоревич","fshrId":"155516","rating":"826","birthDate":"2016","group":"A"},{"fullName":"Григорьев Николай  Алексеевич ","fshrId":"156283","rating":"766","birthDate":"2017","group":"A"},{"fullName":"Фесенко Иван Олегович","fshrId":"","rating":"","birthDate":"2015","group":"B"},{"fullName":"Чундоков  Дамир Тимурович","fshrId":"","rating":"","birthDate":"2018","group":"A"},{"fullName":"Фомичев Александр  Олегович","fshrId":"","rating":"","birthDate":"2016","group":"Неизвестно"},{"fullName":"Золотов Владимир Дмитриевич","fshrId":"","rating":"","birthDate":"2014","group":"B"},{"fullName":"Попов Демьян  Максимович ","fshrId":"","rating":"","birthDate":"2011","group":"Неизвестно"},{"fullName":"Хорбенко Роман Геннадьевич","fshrId":"","rating":"","birthDate":"2015","group":"Неизвестно"}];
+  const participants = [{"group":"B","fullName":"Аверьянов Сергей Александрович","fshrId":"382890","rating":"1320","birthDate":"2011"},{"group":"B","fullName":"Смирнов Глеб Станиславович","fshrId":"648368","rating":"1316","birthDate":"2018"},{"group":"B","fullName":"Насретдинов Рустам Эльмирович","fshrId":"534913","rating":"1234","birthDate":"2017"},{"group":"B","fullName":"Конопский Андрей Валерьевич","fshrId":"687256","rating":"1231","birthDate":"2013"},{"group":"B","fullName":"Павколас Доминик  Ильич ","fshrId":"633285","rating":"1224","birthDate":"2017"},{"group":"B","fullName":"Ананьев Николай Евгеньевич","fshrId":"621581","rating":"1173","birthDate":"2015"},{"group":"B","fullName":"Величкин Пётр Васильевич","fshrId":"644168","rating":"1171","birthDate":"2016"},{"group":"B","fullName":"Леготин Игорь Георгиевич","fshrId":"468075","rating":"1128","birthDate":"2013"},{"group":"B","fullName":"Филинов Кирилл Русланович","fshrId":"421388","rating":"1109","birthDate":"2015"},{"group":"B","fullName":"Солдатов Игнат  Юрьевич ","fshrId":"527002","rating":"1042","birthDate":"2014"},{"group":"B","fullName":"Гусаров  Макар  Андреевич ","fshrId":"700681","rating":"1023","birthDate":"2015"},{"group":"B","fullName":"Фесенко Иван Олегович","fshrId":"","rating":"","birthDate":"2015"},{"group":"A","fullName":"Кабанов Степан Игоревич","fshrId":"155516","rating":"826","birthDate":"2016"},{"group":"A","fullName":"Григорьев Николай  Алексеевич ","fshrId":"156283","rating":"766","birthDate":"2017"},{"group":"A","fullName":"Чундоков  Дамир Тимурович","fshrId":"","rating":"","birthDate":"2018"},{"group":"Командный","teamName":"Медведи ","player1":"Фомичев Александр  Олегович","player1Id":"648423","player2":"Фомичев Олег Николаевич ","player2Id":""},{"group":"B","fullName":"Белоусова Евдокия Дмитриевна","fshrId":"667552","rating":"1000","birthDate":"2015"},{"group":"B","fullName":"Золотов Владимир Дмитриевич","fshrId":"","rating":"","birthDate":"2014"},{"group":"Командный","teamName":"Geometric ","player1":"Попов Демьян  Максимович ","player1Id":"669158","player2":"Шыхалиев Алекбер Афлатун оглы","player2Id":""},{"group":"Неизвестно","fullName":"Хорбенко Роман Геннадьевич","fshrId":"","rating":"","birthDate":"2015"}];
   let currentGroup = 'A';
   let currentSortColumn = 'rating';
   let currentSortAsc = false;
 
-  function sortBy(column) {
-    if (currentSortColumn === column) {
-      currentSortAsc = !currentSortAsc;
-    } else {
-      currentSortColumn = column;
-      currentSortAsc = false;
-    }
+  function sortBy(col) {
+    if(currentGroup!=='A' && currentGroup!=='B') return;
+    if(currentSortColumn===col) currentSortAsc=!currentSortAsc;
+    else { currentSortColumn=col; currentSortAsc=false; }
     renderTable();
   }
 
   function renderTable() {
     const thead = document.getElementById('tableHeader');
     const tbody = document.querySelector('#participants tbody');
-    tbody.innerHTML = '';
+    tbody.innerHTML='';
 
-    // Заголовок
-    thead.innerHTML =
-      '<th>#</th>' +
-      '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
-      '<th onclick="sortBy(\'fshrId\')">' +
-        (currentGroup === 'A' ? 'ID РШТ' : 'ID ФШР') +
-      '</th>' +
-      '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
-      '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
-
-    // Фильтрация и сортировка
-    const filtered = participants
-      .filter(p => p.group === currentGroup)
-      .sort((a,b) => {
-        let va = a[currentSortColumn] || '';
-        let vb = b[currentSortColumn] || '';
-        let na = parseFloat(va), nb = parseFloat(vb);
-        if (!isNaN(na) && !isNaN(nb)) {
-          return currentSortAsc ? na - nb : nb - na;
-        }
-        if (va < vb) return currentSortAsc ? -1 : 1;
-        if (va > vb) return currentSortAsc ? 1 : -1;
+    if(currentGroup==='A' || currentGroup==='B'){
+      thead.innerHTML =
+        '<th>#</th>' +
+        '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
+        '<th onclick="sortBy(\'fshrId\')">'+(currentGroup==='A'?'ID РШТ':'ID ФШР')+'</th>' +
+        '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
+        '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
+      let filtered = participants.filter(p=>p.group===currentGroup);
+      filtered.sort((a,b)=>{
+        let va=a[currentSortColumn]||'', vb=b[currentSortColumn]||'';
+        let na=parseFloat(va), nb=parseFloat(vb);
+        if(!isNaN(na)&&!isNaN(nb)) return currentSortAsc ? na-nb : nb-na;
+        if(va<vb) return currentSortAsc?-1:1;
+        if(va>vb) return currentSortAsc?1:-1;
         return 0;
       });
-
-    // Заполнение строк
-    filtered.forEach((p,i) => {
-      const row = document.createElement('tr');
-      row.innerHTML =
-        '<td>' + (i+1) + '</td>' +
-        '<td>' + p.fullName + '</td>' +
-        '<td>' + p.fshrId + '</td>' +
-        '<td>' + p.birthDate + '</td>' +
-        '<td>' + p.rating + '</td>';
-      tbody.appendChild(row);
-    });
+      filtered.forEach((p,i)=>{
+        const row=document.createElement('tr');
+        row.innerHTML=
+          '<td>'+(i+1)+'</td>'+
+          '<td>'+p.fullName+'</td>'+
+          '<td>'+p.fshrId+'</td>'+
+          '<td>'+p.birthDate+'</td>'+
+          '<td>'+p.rating+'</td>';
+        tbody.appendChild(row);
+      });
+    } else if(currentGroup==='Командный'){
+      thead.innerHTML = '<th>#</th><th>Команда и игроки</th>';
+      participants.filter(p=>p.group==='Командный')
+        .forEach((p,i)=>{
+          const row=document.createElement('tr');
+          row.innerHTML=
+            '<td>'+(i+1)+'</td>'+
+            '<td>'+
+              '<div class="team-name">'+p.teamName+'</div>'+
+              '<div class="player">'+p.player1+
+                ' <span class="player-id">('+p.player1Id+')</span></div>'+
+              '<div class="player">'+p.player2+
+                ' <span class="player-id">('+p.player2Id+')</span></div>'+
+            '</td>';
+          tbody.appendChild(row);
+        });
+    }
   }
 
-  function filterGroup(g) {
-    currentGroup = g;
+  function filterGroup(g){
+    currentGroup=g;
     renderTable();
   }
 
-  window.onload = renderTable;
+  window.onload=renderTable;
 </script>
 </body>
 </html>
