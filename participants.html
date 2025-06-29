@@ -8,98 +8,86 @@
   body{font-family:Arial,sans-serif;padding:20px;margin:0;}
   h2{font-size:16px;text-align:center;margin-bottom:20px;}
   .btn-container{text-align:center;margin-bottom:20px;}
-  .btn{font-size:16px;padding:10px 20px;margin:0 5px;border:none;border-radius:5px;
+  .btn{font-size:14px;padding:8px 16px;margin:0 4px;border:none;border-radius:5px;
        background:#D96B1C;color:#fff;cursor:pointer;}
   .btn:hover{background:#C36019;}
   table{width:100%;border-collapse:collapse;margin-top:20px;}
-  th,td{border:1px solid #ccc;padding:10px;text-align:left;}
+  th,td{border:1px solid #ccc;padding:8px;text-align:left;}
   th{background:#f4f4f4;cursor:pointer;}
   @media(max-width:480px){body{font-size:12px;padding:10px;}th,td{padding:4px;font-size:10px;}}
-  .team-name{font-weight:bold;background:#f0f0f0;padding:6px;border-radius:4px;margin-bottom:4px;}
-  .player{margin-left:8px;margin-bottom:2px;}
-  .player-id{color:#555;font-size:0.9em;}
 </style>
 </head>
 <body>
-  <h2>Выберите Категорию</h2>
+  <h2>Выберите категорию</h2>
   <div class="btn-container">
-    <button class="btn" onclick="filterGroup('A')">Начинающие</button>
-    <button class="btn" onclick="filterGroup('B')">На разряд</button>
-    <button class="btn" onclick="filterGroup('Командный')">Командный</button>
+    <button class="btn" onclick="filterGroup('Начинающие (сб)')">Начинающие (сб)</button>
+    <button class="btn" onclick="filterGroup('Классика (сб+вс)')">Классика (сб+вс)</button>
+    <button class="btn" onclick="filterGroup('Рапид до 13 лет (сб)')">Рапид до 13 лет (сб)</button>
+    <button class="btn" onclick="filterGroup('Начинающие (вс)')">Начинающие (вс)</button>
+    <button class="btn" onclick="filterGroup('OPEN Рапид (вс)')">OPEN Рапид (вс)</button>
   </div>
   <table id="participants">
-    <thead><tr id="tableHeader"></tr></thead>
+    <thead>
+      <tr id="tableHeader"></tr>
+    </thead>
     <tbody></tbody>
   </table>
 <script>
-  const participants = [];
-  let currentGroup = 'A';
+  const participants = [{"group":"Рапид до 13 лет (сб)","fullName":"Насретдинов Рустам Эльмирович","fshrId":"534913","rating":"1086","birthDate":"2017"},{"group":"Начинающие (сб)","fullName":"Мазанова Полина Александровна","fshrId":"","rating":"","birthDate":"2016"}];
+  let currentGroup = 'Начинающие (сб)';
   let currentSortColumn = 'rating';
   let currentSortAsc = false;
 
   function sortBy(col) {
-    if(currentGroup!=='A' && currentGroup!=='B') return;
-    if(currentSortColumn===col) currentSortAsc=!currentSortAsc;
-    else { currentSortColumn=col; currentSortAsc=false; }
+    if (!participants.some(p => p.group === currentGroup)) return;
+    if (currentSortColumn === col) currentSortAsc = !currentSortAsc;
+    else { currentSortColumn = col; currentSortAsc = false; }
     renderTable();
   }
 
   function renderTable() {
     const thead = document.getElementById('tableHeader');
     const tbody = document.querySelector('#participants tbody');
-    tbody.innerHTML='';
+    tbody.innerHTML = '';
 
-    if(currentGroup==='A' || currentGroup==='B'){
-      thead.innerHTML =
-        '<th>#</th>' +
-        '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
-        '<th onclick="sortBy(\'fshrId\')">'+(currentGroup==='A'?'ID РШТ':'ID ФШР')+'</th>' +
-        '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
-        '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
-      let filtered = participants.filter(p=>p.group===currentGroup);
-      filtered.sort((a,b)=>{
-        let va=a[currentSortColumn]||'', vb=b[currentSortColumn]||'';
-        let na=parseFloat(va), nb=parseFloat(vb);
-        if(!isNaN(na)&&!isNaN(nb)) return currentSortAsc ? na-nb : nb-na;
-        if(va<vb) return currentSortAsc?-1:1;
-        if(va>vb) return currentSortAsc?1:-1;
-        return 0;
-      });
-      filtered.forEach((p,i)=>{
-        const row=document.createElement('tr');
-        row.innerHTML=
-          '<td>'+(i+1)+'</td>'+
-          '<td>'+p.fullName+'</td>'+
-          '<td>'+p.fshrId+'</td>'+
-          '<td>'+p.birthDate+'</td>'+
-          '<td>'+p.rating+'</td>';
-        tbody.appendChild(row);
-      });
-    } else if(currentGroup==='Командный'){
-      thead.innerHTML = '<th>#</th><th>Команда и игроки</th>';
-      participants.filter(p=>p.group==='Командный')
-        .forEach((p,i)=>{
-          const row=document.createElement('tr');
-          row.innerHTML=
-            '<td>'+(i+1)+'</td>'+
-            '<td>'+
-              '<div class="team-name">'+p.teamName+'</div>'+
-              '<div class="player">'+p.player1+
-                ' <span class="player-id">('+p.player1Id+')</span></div>'+
-              '<div class="player">'+p.player2+
-                ' <span class="player-id">('+p.player2Id+')</span></div>'+
-            '</td>';
-          tbody.appendChild(row);
-        });
-    }
+    thead.innerHTML =
+      '<th>#</th>' +
+      '<th onclick="sortBy(\'fullName\')">ФИО</th>' +
+      '<th onclick="sortBy(\'fshrId\')">ID</th>' +
+      '<th onclick="sortBy(\'birthDate\')">Год рождения</th>' +
+      '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
+
+    let list = participants.filter(p => p.group === currentGroup);
+    list.sort((a, b) => {
+      const va = a[currentSortColumn] || '';
+      const vb = b[currentSortColumn] || '';
+      const na = parseFloat(va), nb = parseFloat(vb);
+      if (!isNaN(na) && !isNaN(nb)) return currentSortAsc ? na - nb : nb - na;
+      if (va < vb) return currentSortAsc ? -1 : 1;
+      if (va > vb) return currentSortAsc ? 1 : -1;
+      return 0;
+    });
+
+    list.forEach((p, i) => {
+      const row = document.createElement('tr');
+      row.innerHTML =
+        '<td>' + (i+1) + '</td>' +
+        '<td>' + p.fullName + '</td>' +
+        '<td>' + p.fshrId + '</td>' +
+        '<td>' + p.birthDate + '</td>' +
+        '<td>' + p.rating + '</td>';
+      tbody.appendChild(row);
+    });
   }
 
-  function filterGroup(g){
-    currentGroup=g;
+  function filterGroup(g) {
+    currentGroup = g;
+    currentSortColumn = 'rating';
+    currentSortAsc = false;
     renderTable();
   }
 
-  window.onload=renderTable;
+  window.onload = renderTable;
 </script>
 </body>
 </html>
