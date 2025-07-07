@@ -9,23 +9,16 @@
   body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
   h2  { font-size: 16px; text-align: center; margin-bottom: 20px; }
   .btn-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 20px;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 8px; margin-bottom: 20px;
   }
   .btn {
-    font-size: 14px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    background: #D96B1C;
-    color: #fff;
-    cursor: pointer;
+    font-size: 14px; padding: 8px 16px;
+    border: none; border-radius: 5px;
+    background: #D96B1C; color: #fff; cursor: pointer;
   }
   .btn:hover { background: #C36019; }
-  table { width:100%; border-collapse: collapse; margin-top:20px; }
+  table { width:100%; border-collapse:collapse; margin-top:20px; }
   th, td { border:1px solid #ccc; padding:8px; text-align:left; }
   th { background:#f4f4f4; cursor:pointer; }
   @media (max-width:480px) {
@@ -83,10 +76,10 @@
     list.forEach((p,i)=>{
       const row=document.createElement('tr');
       row.innerHTML=
-        '<td>'+(i+1)+'</td>'+
-        '<td>'+p.fullName+'</td>'+
-        '<td>'+p.fshrId+'</td>'+
-        '<td>'+p.birthDate+'</td>'+
+        '<td>'+(i+1)+'</td>' +
+        '<td>'+p.fullName+'</td>' +
+        '<td>'+p.fshrId+'</td>' +
+        '<td>'+p.birthDate+'</td>' +
         '<td>'+p.rating+'</td>';
       tbody.appendChild(row);
     });
