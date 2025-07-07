@@ -2,28 +2,22 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Список участников</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; margin:0; }
-  h2  { font-size: 16px; text-align: center; margin-bottom: 20px; }
-  .btn-container {
-    display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:20px;
-  }
-  .btn {
-    font-size:14px; padding:8px 16px; border:none; border-radius:5px;
-    background:#D96B1C; color:#fff; cursor:pointer;
-  }
-  .btn:hover { background:#C36019; }
-  table { width:100%; border-collapse:collapse; margin-top:20px; }
-  th,td { border:1px solid #ccc; padding:8px; text-align:left; }
-  th { background:#f4f4f4; cursor:pointer; }
+  body{font-family:Arial;padding:20px;margin:0;}
+  h2{font-size:16px;text-align:center;margin-bottom:20px;}
+  .btn-container{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px;}
+  .btn{font-size:14px;padding:8px 16px;border:none;border-radius:5px;background:#D96B1C;color:#fff;cursor:pointer;}
+  .btn:hover{background:#C36019;}
+  table{width:100%;border-collapse:collapse;margin-top:20px;}
+  th,td{border:1px solid #ccc;padding:8px;text-align:left;}
+  th{background:#f4f4f4;cursor:pointer;}
   @media(max-width:480px){
     body{font-size:12px;padding:10px;}
     th,td{padding:4px;font-size:10px;}
     .btn-container{gap:4px;}
-    .btn{flex:1 1 auto; min-width:100px;}
+    .btn{flex:1 1 auto;min-width:100px;}
   }
 </style>
 </head>
@@ -36,58 +30,46 @@
     <button class="btn" onclick="filterGroup('Начинающие (вс)')">Начинающие (вс)</button>
     <button class="btn" onclick="filterGroup('OPEN Рапид (вс)')">OPEN Рапид (вс)</button>
   </div>
-  <table id="participants">
-    <thead><tr id="tableHeader"></tr></thead>
-    <tbody></tbody>
-  </table>
+  <table id="participants"><thead><tr id="tableHeader"></tr></thead><tbody></tbody></table>
 <script>
   const participants = [{"group":"OPEN Рапид (вс)","fullName":"Попов Демьян Максимович","fshrId":"669158","rating":"1123","birthDate":"2011"},{"group":"OPEN Рапид (вс)","fullName":"Булычев Роман Андреевич","fshrId":"","rating":"","birthDate":"1992"},{"group":"Классика (сб+вс)","fullName":"Ломов Пётр Сергеевич","fshrId":"","rating":"","birthDate":"2010"},{"group":"Классика (сб+вс)","fullName":"Жаров Артём Сергеевич","fshrId":"","rating":"","birthDate":"2014"},{"group":"Классика (сб+вс)","fullName":"Потапов Владимир Витальевич","fshrId":"","rating":"","birthDate":"2015"},{"group":"Классика (сб+вс)","fullName":"Сейтаблаев Ильдар Таирович","fshrId":"","rating":"","birthDate":"2016"},{"group":"Начинающие (вс)","fullName":"Абдулахатов Алим Русланович","fshrId":"145135","rating":"850","birthDate":"2016"},{"group":"Начинающие (вс)","fullName":"Марценюк Родион Маркович","fshrId":"","rating":"","birthDate":"2015"},{"group":"Начинающие (сб)","fullName":"Гусев Лев Антонович","fshrId":"155965","rating":"844","birthDate":"2018"},{"group":"Начинающие (сб)","fullName":"Мазанова Полина Александровна","fshrId":"139711","rating":"482","birthDate":"2016"},{"group":"Начинающие (сб)","fullName":"Баканаева Диния Даудовна","fshrId":"152972","rating":"480","birthDate":"2018"},{"group":"Начинающие (сб)","fullName":"Шумский Стивен","fshrId":"","rating":"","birthDate":"2018"},{"group":"Рапид до 13 лет (сб)","fullName":"Пузанова Евлалия Денисовна","fshrId":"604993","rating":"1332","birthDate":"2017"},{"group":"Рапид до 13 лет (сб)","fullName":"Янченко Анастасия Алексеевна","fshrId":"257653","rating":"1235","birthDate":"2013"},{"group":"Рапид до 13 лет (сб)","fullName":"Баканаев Дени Даудович","fshrId":"636624","rating":"1159","birthDate":"2016"},{"group":"Рапид до 13 лет (сб)","fullName":"Ананьев Николай Евгеньевич","fshrId":"621581","rating":"1139","birthDate":"2015"},{"group":"Рапид до 13 лет (сб)","fullName":"Давыдов Максим Алексеевич","fshrId":"669195","rating":"1091","birthDate":"2015"},{"group":"Рапид до 13 лет (сб)","fullName":"Насретдинов Рустам Эльмирович","fshrId":"534913","rating":"1086","birthDate":"2017"},{"group":"Рапид до 13 лет (сб)","fullName":"Александровская Алиса Ивановна","fshrId":"461430","rating":"1000","birthDate":"2014"}];
-  let currentGroup   = 'Начинающие (сб)';
-  let currentSortCol = 'rating';
-  let currentSortAsc = false;
-
+  let currentGroup = 'Начинающие (сб)', currentSortCol = 'rating', currentSortAsc = false;
   function sortBy(col){
     if(currentSortCol===col) currentSortAsc=!currentSortAsc;
     else{currentSortCol=col; currentSortAsc=false;}
     renderTable();
   }
-
   function renderTable(){
-    const thead=document.getElementById('tableHeader');
-    const tbody=document.querySelector('#participants tbody');
-    tbody.innerHTML='';
-    thead.innerHTML=
-      '<th>#</th>'+
-      '<th onclick="sortBy(\'fullName\')">ФИО</th>'+
-      '<th onclick="sortBy(\'fshrId\')">ID</th>'+
-      '<th onclick="sortBy(\'birthDate\')">Год рождения</th>'+
-      '<th onclick="sortBy(\'rating\')">Рейтинг</th>';
-    let list=participants.filter(p=>p.group===currentGroup);
+    const thead = document.getElementById('tableHeader'),
+          tbody = document.querySelector('#participants tbody');
+    tbody.innerHTML=''; thead.innerHTML=
+       '<th>#</th>'
+      +'<th onclick="sortBy('fullName')">ФИО</th>'
+      +'<th onclick="sortBy('fshrId')">ID</th>'
+      +'<th onclick="sortBy('birthDate')">Год рождения</th>'
+      +'<th onclick="sortBy('rating')">Рейтинг</th>';
+    let list = participants.filter(p=>p.group===currentGroup);
     list.sort((a,b)=>{
       const va=a[currentSortCol]||'', vb=b[currentSortCol]||'';
       const na=parseFloat(va), nb=parseFloat(vb);
       if(!isNaN(na)&&!isNaN(nb)) return currentSortAsc?na-nb:nb-na;
-      if(va<vb) return currentSortAsc?-1:1;
-      if(va>vb) return currentSortAsc?1:-1;
-      return 0;
+      return va<vb? (currentSortAsc?-1:1)
+           : va>vb? (currentSortAsc?1:-1)
+           : 0;
     });
     list.forEach((p,i)=>{
       const row=document.createElement('tr');
       row.innerHTML=
-        '<td>'+(i+1)+'</td>'+
-        '<td>'+p.fullName+'</td>'+
-        '<td>'+p.fshrId+'</td>'+
-        '<td>'+p.birthDate+'</td>'+
-        '<td>'+p.rating+'</td>';
+        '<td>'+(i+1)+'</td>'
+       +'<td>'+p.fullName+'</td>'
+       +'<td>'+p.fshrId+'</td>'
+       +'<td>'+p.birthDate+'</td>'
+       +'<td>'+p.rating+'</td>';
       tbody.appendChild(row);
     });
   }
-
-  function filterGroup(g){
-    currentGroup=g; currentSortCol='rating'; currentSortAsc=false; renderTable();
-  }
-
-  window.onload=renderTable;
+  function filterGroup(g){ currentGroup=g; currentSortCol='rating'; currentSortAsc=false; renderTable(); }
+  window.onload = renderTable;
 </script>
 </body>
 </html>
