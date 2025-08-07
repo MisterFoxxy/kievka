@@ -1,1 +1,91 @@
-<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Список участников</title><style>body { font-family: Arial, sans-serif; padding: 20px; margin: 0; overflow-x: hidden; }@keyframes colorChange { 0% { color: #de4729; } 33% { color: #f4860f; } 66% { color: #f09609; } 100% { color: #ecab0e; } }h2 { font-size: 24px; margin-bottom: 20px; animation: colorChange 3s infinite alternate; text-align: center; }.btn-container { margin-bottom: 20px; text-align: center; }.btn { font-size: 16px; padding: 10px 20px; margin: 5px; cursor: pointer; border: none; background-color: #D96B1C; color: white; border-radius: 5px; }.btn:hover { background-color: #C36019; }table { border-collapse: collapse; width: 100%; margin-top: 20px; min-width: 600px; }th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }th { background-color: #f4f4f4; }.adaptive-text { font-size: 16px; }@media (max-width: 400px) { .adaptive-text { font-size: 14px; } table { min-width: auto; } table, th, td { font-size: 12px; padding: 8px; } }</style></head><body><h2 class="adaptive-text">Предварительные Списки</h2><div class="btn-container"><button class="btn" onclick="filterGroup('A')">Начинающие</button><button class="btn" onclick="filterGroup('B')">Back to school</button><button class="btn" onclick="filterGroup('O')">OPEN</button></div><table id="participants"><thead><tr><th>#</th><th>ФИО</th><th>ID ФШР</th><th>Рейтинг</th></tr></thead><tbody></tbody></table><script>const participants = [{"fullName":"Павлов Алексей Николаевич","fshrId":"520335","rating":"1032","group":"B"},{"fullName":"Новикова Марина Сергеевнп","fshrId":"","rating":"","group":"O"},{"fullName":"Сибилев Николай Николаевич","fshrId":"","rating":"","group":"O"},{"fullName":"Есин Глеб Андреевич","fshrId":"622824","rating":"1204","group":"B"},{"fullName":"Якубовский  Филипп  Геннадьевич","fshrId":"466817","rating":"1155","group":"B"},{"fullName":"Гусев Лев Антонович","fshrId":"692360","rating":"1265","group":"B"},{"fullName":"Гончаренко Иван Сергеевич","fshrId":"611875","rating":"1057","group":"Неизвестно"},{"fullName":"Кондрашкин Мурат Андреевич","fshrId":"53255","rating":"1677","group":"Неизвестно"},{"fullName":"Сундетов  Марсель  Артурович","fshrId":"667579","rating":"1000","group":"B"},{"fullName":"Баканаев  Дени  Даудович","fshrId":"636624","rating":"1173","group":"B"},{"fullName":"Баканаева  Диния Даудовна","fshrId":"670760","rating":"1060","group":"Неизвестно"},{"fullName":"Вадим Вишневский Борисович","fshrId":"","rating":"","group":"Неизвестно"},{"fullName":"Ананьев Николай Евгеньевич","fshrId":"621581","rating":"1172","group":"B"},{"fullName":"Стрепетков Феликс Андреевич","fshrId":"692357","rating":"1101","group":"Неизвестно"},{"fullName":"Бабаев Андрей Евгеньевич","fshrId":"709445","rating":"1253","group":"Неизвестно"}];let currentGroup = "A";function filterGroup(group) { currentGroup = group; renderTable(); }function renderTable() {const theadRow = document.querySelector("#participants thead tr"); if (currentGroup === "A") { theadRow.innerHTML = `<th>#</th><th>ФИО</th><th>ID РШТ</th><th>Рейтинг</th>`; } else { theadRow.innerHTML = `<th>#</th><th>ФИО</th><th>ID ФШР</th><th>Рейтинг</th>`; }const tbody = document.querySelector("#participants tbody"); tbody.innerHTML = "";const filtered = participants.filter(p => p.group === currentGroup).sort((a, b) => Number(b.rating) - Number(a.rating));filtered.forEach((p, i) => {const row = document.createElement("tr");row.innerHTML = `<td>${i+1}</td><td>${p.fullName}</td><td>${p.fshrId}</td><td>${p.rating}</td>`;tbody.appendChild(row);});}window.onload = renderTable;</script></body></html>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список участников RAPID</title>
+  <style>
+    body { font-family:Arial,sans-serif; padding:20px; margin:0 }
+    h2   { text-align:center; margin-bottom:20px }
+    .btn-container {
+      display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:20px;
+    }
+    .btn {
+      padding:8px 16px; border:none; border-radius:5px;
+      background:#D96B1C; color:#fff; cursor:pointer; font-size:14px;
+    }
+    .btn:hover { background:#C36019 }
+    table { width:100%; border-collapse:collapse; margin-top:20px }
+    th, td { border:1px solid #ccc; padding:8px; text-align:left }
+    th { background:#f4f4f4; cursor:pointer }
+    @media(max-width:480px){
+      body { font-size:12px; padding:10px }
+      th,td { padding:4px; font-size:10px }
+      .btn { flex:1 1 auto; min-width:90px }
+    }
+  </style>
+</head>
+<body>
+  <h2>Выберите категорию RAPID</h2>
+  <div class="btn-container">
+    <button class="btn" onclick="filter('Начинающие (сб)')">Начинающие (сб)</button><button class="btn" onclick="filter('OPEN Рапид (вс)')">OPEN Рапид (вс)</button><button class="btn" onclick="filter('Рапид до 13 лет (сб)')">Рапид до 13 лет (сб)</button><button class="btn" onclick="filter('Начинающие (вс)')">Начинающие (вс)</button>
+  </div>
+  <table id="tab">
+    <thead><tr id="hdr"></tr></thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    var data = [{"group":"Неизвестно","fullName":"Кондрашкин Мурат Андреевич","birth":"2002","id":"53255","rt":"1677"},{"group":"Неизвестно","fullName":"Гусев Лев Антонович","birth":"2018","id":"692360","rt":"1265"},{"group":"Неизвестно","fullName":"Бабаев Андрей Евгеньевич","birth":"1955","id":"709445","rt":"1253"},{"group":"Неизвестно","fullName":"Есин Глеб Андреевич","birth":"2016","id":"622824","rt":"1204"},{"group":"Неизвестно","fullName":"Баканаев  Дени  Даудович","birth":"2016","id":"636624","rt":"1173"},{"group":"Неизвестно","fullName":"Ананьев Николай Евгеньевич","birth":"2015","id":"621581","rt":"1172"},{"group":"Неизвестно","fullName":"Якубовский  Филипп  Геннадьевич ","birth":"2017","id":"466817","rt":"1155"},{"group":"Неизвестно","fullName":"Стрепетков Феликс Андреевич","birth":"2017","id":"692357","rt":"1101"},{"group":"Неизвестно","fullName":"Баканаева  Диния Даудовна ","birth":"2018","id":"670760","rt":"1060"},{"group":"Неизвестно","fullName":"Гончаренко Иван Сергеевич","birth":"2016","id":"611875","rt":"1057"},{"group":"Неизвестно","fullName":"Павлов Алексей Николаевич","birth":"2016","id":"520335","rt":"1032"},{"group":"Неизвестно","fullName":"Сундетов  Марсель  Артурович","birth":"2018","id":"667579","rt":"1000"},{"group":"Неизвестно","fullName":"Вадим Вишневский Борисович","birth":"2018","id":"","rt":""},{"group":"OPEN Рапид (вс)","fullName":"Новикова Марина Сергеевнп","birth":"1987","id":"","rt":""},{"group":"OPEN Рапид (вс)","fullName":"Сибилев Николай Николаевич","birth":"2001","id":"","rt":""}];
+    var grp  = 'Начинающие (сб)', col = 'rt', asc = false;
+
+    function sortBy(c){
+      if(col === c) asc = !asc; else { col = c; asc = false; }
+      render();
+    }
+
+    function filter(g){
+      grp = g; col = 'rt'; asc = false;
+      render();
+    }
+
+    function render(){
+      var hdr = document.getElementById('hdr');
+      hdr.innerHTML = [
+        '<th>#</th>',
+        '<th onclick="sortBy(\'fullName\')">ФИО</th>',
+        '<th onclick="sortBy(\'id\')">ID</th>',
+        '<th onclick="sortBy(\'birth\')">Год рожд.</th>',
+        '<th onclick="sortBy(\'rt\')">Рейтинг</th>'
+      ].join('');
+
+      var body = document.querySelector('#tab tbody');
+      body.innerHTML = '';
+
+      data
+        .filter(p => p.group === grp)
+        .sort(function(a,b){
+          var A = a[col]||'', B = b[col]||'';
+          var nA = parseFloat(A), nB = parseFloat(B);
+          if(!isNaN(nA) && !isNaN(nB)){
+            return asc ? nA - nB : nB - nA;
+          }
+          return A < B ? (asc ? -1 : 1) : A > B ? (asc ? 1 : -1) : 0;
+        })
+        .forEach(function(p,i){
+          body.insertAdjacentHTML('beforeend',
+            '<tr>' +
+              '<td>' + (i+1) + '</td>' +
+              '<td>' + p.fullName + '</td>' +
+              '<td>' + p.id       + '</td>' +
+              '<td>' + p.birth    + '</td>' +
+              '<td>' + p.rt       + '</td>' +
+            '</tr>'
+          );
+        });
+    }
+
+    window.onload = render;
+  </script>
+</body>
+</html>
