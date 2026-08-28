@@ -106,7 +106,7 @@
   </table>
 
   <script>
-    var data = [];
+    var data = [{"group":"Начинающие до 850 РШТ","fullName":"Прокофьева Карина Дмитриевна","birth":"2018","createdAt":"","createdAtTs":0,"id":"164965","rt":"580"},{"group":"На Разряд до 1550 ФШР","fullName":"Косарев Владимир Витальевич","birth":"2015","createdAt":"","createdAtTs":0,"id":"673521","rt":"1281"},{"group":"На Разряд до 1550 ФШР","fullName":"Иванов  Ярослав  Романович ","birth":"2014","createdAt":"","createdAtTs":0,"id":"547845","rt":"1272"},{"group":"На Разряд до 1550 ФШР","fullName":"Серов Павел Андреевич ","birth":"2017","createdAt":"","createdAtTs":0,"id":"708424","rt":"1245"},{"group":"На Разряд до 1550 ФШР","fullName":"Зайнагутдинова  Алиса Евгеньевна","birth":"2015","createdAt":"","createdAtTs":0,"id":"584032","rt":"1092"}];
     var grp = 'Начинающие до 850 РШТ';
     var col = 'rt';
     var asc = false;
@@ -176,7 +176,8 @@
         var count = 0;
 
         filtered.forEach(function(player) {
-          var rating = parseFloat(player.rt);
+          var rating =
+            parseFloat(player.rt);
 
           if (!isNaN(rating)) {
             sum += rating;
@@ -185,7 +186,9 @@
         });
 
         var average =
-          count ? Math.round(sum / count) : 0;
+          count
+            ? Math.round(sum / count)
+            : 0;
 
         document.getElementById('avg').textContent =
           'Средний рейтинг группы: ' +
@@ -200,16 +203,22 @@
         var valueB = b[col] || '';
 
         if (col === 'createdAtTs') {
-          var timeA = parseFloat(valueA) || 0;
-          var timeB = parseFloat(valueB) || 0;
+          var timeA =
+            parseFloat(valueA) || 0;
+
+          var timeB =
+            parseFloat(valueB) || 0;
 
           return asc
             ? timeA - timeB
             : timeB - timeA;
         }
 
-        var numberA = parseFloat(valueA);
-        var numberB = parseFloat(valueB);
+        var numberA =
+          parseFloat(valueA);
+
+        var numberB =
+          parseFloat(valueB);
 
         if (
           !isNaN(numberA) &&
