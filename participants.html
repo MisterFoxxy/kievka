@@ -3,61 +3,128 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Список участников RAPID</title>
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
-    h2 { text-align: center; margin-bottom: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     .btn-container {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
     }
+
     .btn {
-      padding: 8px 16px; border: none; border-radius: 5px;
-      background: #D96B1C; color: #fff; cursor: pointer; font-size: 14px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      background: #D96B1C;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 14px;
     }
-    .btn:hover { background: #C36019; }
-    #avg { text-align: center; margin-top: 6px; font-weight: 600; }
-    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background: #f4f4f4; cursor: pointer; }
+
+    .btn:hover {
+      background: #C36019;
+    }
+
+    #avg {
+      text-align: center;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    th,
+    td {
+      border: 1px solid #cccccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #f4f4f4;
+      cursor: pointer;
+    }
+
     @media (max-width: 480px) {
-      body { font-size: 12px; padding: 10px; }
-      th, td { padding: 4px; font-size: 10px; }
-      .btn { flex: 1 1 auto; min-width: 90px; }
+      body {
+        font-size: 12px;
+        padding: 10px;
+      }
+
+      th,
+      td {
+        padding: 4px;
+        font-size: 10px;
+      }
+
+      .btn {
+        flex: 1 1 auto;
+        min-width: 90px;
+      }
     }
   </style>
 </head>
+
 <body>
   <h2>Выберите категорию</h2>
+
   <div class="btn-container">
-    <button class="btn" onclick="filter('На Разряд до 1250 ФШР')">На Разряд до 1250 ФШР</button><button class="btn" onclick="filter('На Разряд до 1700 ФШР')">На Разряд до 1700 ФШР</button><button class="btn" onclick="filter('Ожидающие участия')">Ожидающие участия</button>
+    <button class="btn" onclick="filter('На Разряд до 850 РШТ')">На Разряд до 850 РШТ</button><button class="btn" onclick="filter('На Разряд до 1700 ФШР')">На Разряд до 1700 ФШР</button><button class="btn" onclick="filter('Ожидающие участия')">Ожидающие участия</button>
   </div>
 
   <div id="avg"></div>
 
   <table id="tab">
-    <thead><tr id="hdr"></tr></thead>
+    <thead>
+      <tr id="hdr"></tr>
+    </thead>
+
     <tbody></tbody>
   </table>
 
   <script>
     var data = [];
-    var grp  = 'На Разряд до 1250 ФШР';
-    var col  = 'rt';
-    var asc  = false;
+    var grp = 'На Разряд до 850 РШТ';
+    var col = 'rt';
+    var asc = false;
     var waitingGroupName = 'Ожидающие участия';
 
-    function sortBy(c) {
-      if (col === c) asc = !asc;
-      else {
-        col = c;
+    function sortBy(column) {
+      if (col === column) {
+        asc = !asc;
+      } else {
+        col = column;
         asc = false;
       }
+
       render();
     }
 
-    function filter(g) {
-      grp = g;
+    function filter(group) {
+      grp = group;
 
       if (grp === waitingGroupName) {
         col = 'createdAtTs';
@@ -71,17 +138,18 @@
     }
 
     function render() {
-      var hdr = document.getElementById('hdr');
+      var header =
+        document.getElementById('hdr');
 
       if (grp === waitingGroupName) {
-        hdr.innerHTML = [
+        header.innerHTML = [
           '<th>#</th>',
           '<th onclick="sortBy(\'fullName\')">ФИО</th>',
           '<th onclick="sortBy(\'birth\')">Год рожд.</th>',
           '<th onclick="sortBy(\'createdAtTs\')">Дата заявки</th>'
         ].join('');
       } else {
-        hdr.innerHTML = [
+        header.innerHTML = [
           '<th>#</th>',
           '<th onclick="sortBy(\'fullName\')">ФИО</th>',
           '<th onclick="sortBy(\'id\')">ID</th>',
@@ -90,71 +158,99 @@
         ].join('');
       }
 
-      var body = document.querySelector('#tab tbody');
+      var body =
+        document.querySelector('#tab tbody');
+
       body.innerHTML = '';
 
-      var filtered = data.filter(function(p) {
-        return p.group === grp;
+      var filtered = data.filter(function(player) {
+        return player.group === grp;
       });
 
       if (grp === waitingGroupName) {
         document.getElementById('avg').textContent =
-          'Количество заявок в ожидании: ' + filtered.length;
+          'Количество заявок в ожидании: ' +
+          filtered.length;
       } else {
-        var sum = 0, cnt = 0;
-        for (var k = 0; k < filtered.length; k++) {
-          var n = parseFloat(filtered[k].rt);
-          if (!isNaN(n)) {
-            sum += n;
-            cnt++;
-          }
-        }
+        var sum = 0;
+        var count = 0;
 
-        var avg = cnt ? Math.round(sum / cnt) : 0;
+        filtered.forEach(function(player) {
+          var rating = parseFloat(player.rt);
+
+          if (!isNaN(rating)) {
+            sum += rating;
+            count++;
+          }
+        });
+
+        var average =
+          count ? Math.round(sum / count) : 0;
+
         document.getElementById('avg').textContent =
-          'Средний рейтинг группы: ' + avg + ' (участников: ' + filtered.length + ')';
+          'Средний рейтинг группы: ' +
+          average +
+          ' (участников: ' +
+          filtered.length +
+          ')';
       }
 
       filtered.sort(function(a, b) {
-        var A = a[col] || '';
-        var B = b[col] || '';
+        var valueA = a[col] || '';
+        var valueB = b[col] || '';
 
         if (col === 'createdAtTs') {
-          var tA = parseFloat(A) || 0;
-          var tB = parseFloat(B) || 0;
-          return asc ? tA - tB : tB - tA;
+          var timeA = parseFloat(valueA) || 0;
+          var timeB = parseFloat(valueB) || 0;
+
+          return asc
+            ? timeA - timeB
+            : timeB - timeA;
         }
 
-        var nA = parseFloat(A);
-        var nB = parseFloat(B);
+        var numberA = parseFloat(valueA);
+        var numberB = parseFloat(valueB);
 
-        if (!isNaN(nA) && !isNaN(nB)) {
-          return asc ? nA - nB : nB - nA;
+        if (
+          !isNaN(numberA) &&
+          !isNaN(numberB)
+        ) {
+          return asc
+            ? numberA - numberB
+            : numberB - numberA;
         }
 
-        return A < B ? (asc ? -1 : 1) : A > B ? (asc ? 1 : -1) : 0;
+        if (valueA < valueB) {
+          return asc ? -1 : 1;
+        }
+
+        if (valueA > valueB) {
+          return asc ? 1 : -1;
+        }
+
+        return 0;
       });
 
-      filtered.forEach(function(p, i) {
+      filtered.forEach(function(player, index) {
         if (grp === waitingGroupName) {
           body.insertAdjacentHTML(
             'beforeend',
             '<tr>' +
-              '<td>' + (i + 1) + '</td>' +
-              '<td>' + (p.fullName || '') + '</td>' +
-              '<td>' + (p.birth || '') + '</td>' +
-              '<td>' + (p.createdAt || '') + '</td>' +
+              '<td>' + (index + 1) + '</td>' +
+              '<td>' + (player.fullName || '') + '</td>' +
+              '<td>' + (player.birth || '') + '</td>' +
+              '<td>' + (player.createdAt || '') + '</td>' +
             '</tr>'
           );
         } else {
           body.insertAdjacentHTML(
             'beforeend',
             '<tr>' +
-              '<td>' + (i + 1) + '</td>' +
-              '<td>' + (p.fullName || '') + '</td>' +
-              '<td>' + (p.id || '') + '</td>' +
-              '<td>' + (p.birth || '') + '</td>' +
-              '<td>' + (p.rt || '') + '</td>' +
+              '<td>' + (index + 1) + '</td>' +
+              '<td>' + (player.fullName || '') + '</td>' +
+              '<td>' + (player.id || '') + '</td>' +
+              '<td>' + (player.birth || '') + '</td>' +
+              '<td>' + (player.rt || '') + '</td>' +
             '</tr>'
           );
         }
